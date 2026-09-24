@@ -1,11 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Utileria JS - Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    
+
+    <div class="card">
+        <div class="card-header">
+            <h1>Iniciar Sesión</h1>
+            <p>Ingresa tus datos de acceso para continuar.</p>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" placeholder="ejemplo@correo.com">
+                <span class="error-msg" id="errorCorreo"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" placeholder="••••••••">
+                <span class="error-msg" id="errorPassword"></span>
+            </div>
+
+            <button type="submit" class="btn">Ingresar al Sistema</button>
+        </form>
+
+        <div class="link-container">
+            <p>¿No tienes cuenta? <a href="index.html">Ir al Registro</a></p>
+        </div>
+    </div>
+
+    <script src="js/utileria.js"></script>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            document.getElementById('errorCorreo').textContent = '';
+            document.getElementById('errorPassword').textContent = '';
+
+            const correo = document.getElementById('correo').value;
+            const password = document.getElementById('password').value;
+
+            let esValido = true;
+
+            if (!validarCorreo(correo)) {
+                document.getElementById('errorCorreo').textContent = 'Ingrese un correo electrónico válido.';
+                esValido = false;
+            }
+
+            if (!validarPassword(password)) {
+                document.getElementById('errorPassword').textContent = 'Mínimo 8 caracteres (mayúscula, minúscula, número y especial).';
+                esValido = false;
+            }
+
+            if (esValido) {
+                alert("¡Inicio de sesión exitoso!");
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,64 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utileria JS</title>
-    <link reel="Stylesheet" href="css/styles.css">
+    <title>Utileria JS - Registro</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Fomulario de registro</h1>
-        <p>Valida tus datos usando la <String>Libreria</String></p>
-        <form id="registroForm">
+
+    <div class="card">
+        <div class="card-header">
+            <h1>Formulario de Registro</h1>
+            <p>Valida tus datos en tiempo real usando nuestra librería personalizada.</p>
+        </div>
+
+        <form id="registroForm" novalidate>
             <div class="form-group">
-                <label form="nombre">Nombre Completo: </label>
-                <input type="text" id="nombre" placeholder="Ej. Juan" required>
-                <span class="error.msg"></span>
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" placeholder="Ej. Juan Pérez">
+                <span class="error-msg" id="errorNombre"></span>
             </div>
 
             <div class="form-group">
-                <label for="telefono">Telefono (max. 10 digitos): </label>
-                <input type= "number" id="telefono" placeholder="Ej.9518929016" required> 
+                <label for="telefono">Teléfono (Máx. 10 dígitos)</label>
+                <input type="text" id="telefono" placeholder="Ej. 9518929016">
                 <span class="error-msg" id="errorTelefono"></span>
             </div>
 
             <div class="form-group">
-                <label for="monto">Monto registro (pesos MXN): </label>
-                <input type="numer" id="monto" placeholder="Ej.15000" required>
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fechaNacimiento">
+                <span class="error-msg" id="errorFecha"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="monto">Monto de Registro (MXN)</label>
+                <input type="number" id="monto" placeholder="Ej. 1500">
                 <span class="error-msg" id="errorMonto"></span>
             </div>
 
             <button type="submit" class="btn">Validar y Procesar</button>
         </form>
-        
-        <br>
-        <a href="login.html">Ir al login: </a>
-    </div>
 
-    <!--Ventana Modal-->
-    <div id="modalEdad" class="modal">
-        <div class="modal-content">
-            <h2>Resultado de calculos: </h2>
-            <p id="modalMensaje"></p>
-            <p id="modalMontoFormateado"></p>
-            <button id="cerrarModal" class="btn-secondaty">Cerrar</button>
+        <div class="link-container">
+            <p>¿Ya estás registrado? <a href="login.html">Ir al Login</a></p>
         </div>
     </div>
-    
-    <!--Scrips-->
-    <script src="js/utileria.js"></script>
-    <script>
-        const form=document.getElementById('registroForm');
-        const modal = document.getElementById('modalEdad');
-        const modalMensaje=document.getElementById('modalMensaje');
-        const modalMontoFormateado= document.getElementById('modalMontoFormateado');
-        const cerrarModalBtn= document.getElementById('cerrarModal');
 
-        form.addEventListener('submit', function(e){
+    <div id="modalEdad" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2>Resultado de Cálculos</h2>
+            <p id="modalMensaje"></p>
+            <p id="modalMontoFormateado" class="highlight-text"></p>
+            <button id="cerrarModal" class="btn-secondary">Cerrar Ventana</button>
+        </div>
+    </div> 
+
+    <script src="js/utileria.js"></script>
+    
+    <script>
+        const form = document.getElementById('registroForm');
+        const modal = document.getElementById('modalEdad');
+        const modalMensaje = document.getElementById('modalMensaje');
+        const modalMontoFormateado = document.getElementById('modalMontoFormateado');
+        const cerrarModalBtn = document.getElementById('cerrarModal');
+
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            document.querySelectorAll('.error-msg').forEach(el =>el.textContent='');
+            document.querySelectorAll('.error-msg').forEach(el => el.textContent = '');
+
+            const nombre = document.getElementById('nombre').value;
+            const telefono = document.getElementById('telefono').value;
+            const fechaNacimiento = document.getElementById('fechaNacimiento').value;
+            const monto = document.getElementById('monto').value;
+
+            let esValido = true;
+
+            const nombreLimpio = typeof limpiarEspacios === 'function' ? limpiarEspacios(nombre) : nombre.trim();
+
+            if (!nombreLimpio || (typeof soloLetras === 'function' && !soloLetras(nombreLimpio))) {
+                document.getElementById('errorNombre').textContent = 'El nombre solo debe contener letras.';
+                esValido = false;
+            }
+
+            if (!telefono || (typeof validarLongitud === 'function' && !validarLongitud(telefono, 10)) || isNaN(telefono)) {
+                document.getElementById('errorTelefono').textContent = 'Debe ser numérico de máximo 10 dígitos.';
+                esValido = false;
+            }
+
+            if (!fechaNacimiento) {
+                document.getElementById('errorFecha').textContent = 'Selecciona una fecha válida.';
+                esValido = false;
+            }
+
+            if (!monto || Number(monto) <= 0) {
+                document.getElementById('errorMonto').textContent = 'Ingresa un monto válido mayor a 0.';
+                esValido = false;
+            }
+
+            if (esValido) {
+                const edad = typeof calcularEdad === 'function' ? calcularEdad(fechaNacimiento) : 'N/A';
+                const esMayor = typeof esMayorDeEdad === 'function' ? esMayorDeEdad(fechaNacimiento) : false;
+                const moneda = typeof formatearMoneda === 'function' ? formatearMoneda(monto) : `$${monto} MXN`;
+
+                modalMensaje.innerHTML = `Hola <strong>${nombreLimpio}</strong>, tienes <strong>${edad} años</strong> (${esMayor ? 'Mayor de edad' : 'Menor de edad'}).`;
+                modalMontoFormateado.textContent = `Monto registrado: ${moneda}`;
+
+                modal.classList.add('active');
+            }
+        });
+
+        cerrarModalBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
         });
     </script>
 </body>
