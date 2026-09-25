@@ -15,7 +15,6 @@ body {
     padding: 20px;
 }
 
-/* Tarjeta Principal */
 .card {
     background: #ffffff;
     width: 100%;
@@ -55,7 +54,6 @@ body {
     margin-top: 4px;
 }
 
-/* Formulario */
 .form-group {
     margin-bottom: 16px;
 }
@@ -93,7 +91,6 @@ input:focus {
     min-height: 16px;
 }
 
-/* Botones */
 .btn {
     width: 100%;
     background-color: #0d9488;

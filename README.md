@@ -73,12 +73,11 @@ generarCodigoUsuario("Ana", "1995-10-20");
 ---
 
 ## Capturas de Pantalla
-![Formulario de Registro] (img/mayorDeEdad.png)
-![Inicio de sesion, mayor de edad] (img/menorDeEdad.png)
-![Error de registro] (img/errorRegistro.png)
-![Error de sesion] (img/imagenerror.png)
 
----
+![Formulario de Registro](img/mayorDeEdad.png)
+![Inicio de sesion, mayor de edad](img/menorDeEdad.png)
+![Error de registro](img/errorRegistro.png)
+![Error de sesion](img/imagenerror.png)
 
 ## Demo en Video (60 segundos)
 ()
